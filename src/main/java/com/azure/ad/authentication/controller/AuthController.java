@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -33,17 +32,17 @@ public class AuthController {
         UserDto userDto = new UserDto().setEmail(loginRequest.getEmail()).setPassword(loginRequest.getPassword());
         AuthenticationResult authenticationResult = authService.authenticateUser(userDto);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date());
-        body.put("status", HttpStatus.OK.value());
-        body.put("user-email", authenticationResult.getUserInfo().getDisplayableId());
-        body.put("user-name", authenticationResult.getUserInfo().getGivenName());
-        body.put("family-name", authenticationResult.getUserInfo().getFamilyName());
-        body.put("tenant-id", authenticationResult.getUserInfo().getTenantId());
+        Map<String, Object> body = Map.of(
+                "timestamp", new Date(),
+                "status", HttpStatus.OK.value(),
+                "user-email", authenticationResult.getUserInfo().getDisplayableId(),
+                "user-name", authenticationResult.getUserInfo().getGivenName(),
+                "family-name", authenticationResult.getUserInfo().getFamilyName(),
+                "tenant-id", authenticationResult.getUserInfo().getTenantId()
+        );
 
         return ResponseEntity.ok()
                 .header("MS-Access-Token", authenticationResult.getAccessToken())
                 .body(body);
-
     }
 }

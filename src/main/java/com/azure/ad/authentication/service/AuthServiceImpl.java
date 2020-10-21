@@ -25,14 +25,18 @@ public class AuthServiceImpl implements AuthService {
     @Value("${CLIENT_ID}")
     private String clientID;
 
+    @Value("${TENANT_ID}")
+    private String tenantID;
+
     @Override
     public AuthenticationResult authenticateUser(UserDto userDto) throws Exception {
         String email = userDto.getEmail();
         String password = new String(Base64.getDecoder().decode(userDto.getPassword()));
         ExecutorService service = Executors.newFixedThreadPool(1);
         try {
-            //crate context with address of authority, throws exception if url incorrect
-            AuthenticationContext context = new AuthenticationContext(authority, false, service);
+            String authority_url = new StringBuilder(authority).append(tenantID).append("/v2.0").toString();
+            // create context with address of authority, throws exception if url incorrect
+            AuthenticationContext context = new AuthenticationContext(authority_url, false, service);
             // Acquires a security token from the authority using a username/password flow.
             Future<AuthenticationResult> future = context.acquireToken(graphURL, clientID, email, password, null);
             return future.get();

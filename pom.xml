@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.azure.ad.authentication</groupId>
-	<artifactId>ms-ad-auth</artifactId>
+	<artifactId>azure-ad-auth</artifactId>
 	<version>1.0</version>
-	<name>Azure-AD-Auth</name>
-	<description>Demo project for Spring Boot</description>
+	<name>azure-ad-auth</name>
+	<description>Azure AD based authentication micro-service written in spring boot</description>
 
 	<properties>
 		<java.version>11</java.version>
